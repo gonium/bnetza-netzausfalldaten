@@ -13,5 +13,8 @@ df = xl.parse(0)
 
 print df.head()
 
+# http://stackoverflow.com/a/17335754
+# Rename columns using df.columns = ['W','X','Y','Z']
+
 
 
