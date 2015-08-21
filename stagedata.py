@@ -28,11 +28,30 @@ with pb.ProgressBar(maxval=len(files)) as progress:
     progress.update(idx)
 print "Finished reading data into memory."
 
-print "Data cleanup"
+print "Data cleanup:"
 # http://stackoverflow.com/a/17335754
 # Rename columns using df.columns = ['W','X','Y','Z']
+print "(1) cast types to fix broken data"
 alldata[['Beginn']] = pd.to_datetime(alldata['Beginn'], format="%Y-%m-%d %H:%M:%S.%f")
+# trafo columns are broken - set type manually.
+def float_or_nan(value):
+  print type(value)
+  if type(value) is not float:
+    return np.nan
+  else:
+    return value.astype(float)
 
+alldata['ntrafo'] = alldata['ntrafo'].apply(lambda val: float_or_nan(val))
+alldata['ntrafo_produkt'] = alldata['ntrafo_produkt'].apply(lambda val: float_or_nan(val))
+alldata['ktrafo'] = alldata['ktrafo'].apply(lambda val: float_or_nan(val))
+alldata['ktrafo_produkt'] = alldata['ktrafo_produkt'].apply(lambda val: float_or_nan(val))
+
+#alldata['ntrafo'] = alldata['ntrafo'].astype(np.float)
+#alldata['ntrafo_produkt'] = alldata['ntrafo_produkt'].astype(np.float)
+#alldata['ktrafo'] = alldata['ktrafo'].astype(np.float)
+#alldata['ktrafo_produkt'] = alldata['ktrafo_produkt'].astype(np.float)
+
+print "(2) Clean label for Netzebene"
 def label_netzebene(row):
   if row[u'HöS'] == 1:
     return u"HS"
@@ -42,10 +61,10 @@ def label_netzebene(row):
     return u"MS"
   if row[u'NS'] == 1:
     return u"NS"
-
 alldata['Netzebene'] = alldata.apply(lambda row: label_netzebene(row),
     axis=1)
 
+print "(3) Forcing category datatype for some columns"
 for col in ['Art', 'Anlass', 'Netzebene']:
   alldata[col] = alldata[col].astype('category')
 

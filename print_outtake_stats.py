@@ -32,3 +32,5 @@ print u"Ausfälle auf den Netzebenen:"
 for i in netzebene_types:
   count = alldata[alldata['Netzebene'] == i].shape[0]
   print "* %s: %i, %.2f%%" % (i, count, count*100.0/all_outtakes)
+
+print alldata['ktrafo_produkt'].describe()
