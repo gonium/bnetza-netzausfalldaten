@@ -33,14 +33,16 @@ print "Data cleanup:"
 # Rename columns using df.columns = ['W','X','Y','Z']
 print "(1) cast types to fix broken data"
 alldata[['Beginn']] = pd.to_datetime(alldata['Beginn'], format="%Y-%m-%d %H:%M:%S.%f")
-# trafo columns are broken - set type manually.
+
+# trafo columns are broken - set type manually. After loading the
+# datasets the column data is represented as a unicode string or a
+# datetime object. The unicode string can be converted to a float - the
+# datetime will be replaced by NaN.
 def float_or_nan(value):
-  print type(value)
-  if type(value) is not float:
+  if type(value) is not type(u"foo"):
     return np.nan
   else:
-    return value.astype(float)
-
+    return np.float(value)
 alldata['ntrafo'] = alldata['ntrafo'].apply(lambda val: float_or_nan(val))
 alldata['ntrafo_produkt'] = alldata['ntrafo_produkt'].apply(lambda val: float_or_nan(val))
 alldata['ktrafo'] = alldata['ktrafo'].apply(lambda val: float_or_nan(val))
