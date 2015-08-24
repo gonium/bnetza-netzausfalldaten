@@ -38,7 +38,7 @@ plt.plot(ungeplant_hs['Beginn'], ungeplant_hs["ktrafo_produkt"],
   'r*', label=u"Hochspannungsebene", markersize=20.0)
 plt.plot(ungeplant_hoes['Beginn'], ungeplant_hoes["ktrafo_produkt"],
   'y*', label=u"Höchstspannungsebene", markersize=20.0)
-#plt.yscale('log')
+plt.yscale('log')
 legend=plt.legend(loc="best")
 plt.tight_layout()
 plt.savefig("images/all_downtimes.png", bbox_inches='tight')
