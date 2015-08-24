@@ -20,6 +20,8 @@ last_outtake=np.max(alldata['Beginn'])
 print "Erster Ausfall: %s, letzter Ausfall: %s" % (first_outtake,
     last_outtake)
 
+
+
 ungeplant = alldata[alldata['Art']==u"ungeplant"]
 ungeplant_hoes = ungeplant[ungeplant['Netzebene'] == u"HöS"]
 ungeplant_hs = ungeplant[ungeplant['Netzebene'] == u"HS"]
@@ -29,7 +31,7 @@ print "Drawing"
 fig = plt.figure(figsize=(16, 9), dpi=75)
 plt.title(u"Übersicht der ungeplanten Ausfälle")
 plt.xlabel("Zeit [MESZ]")
-plt.ylabel("ktrafo_produkt")
+plt.ylabel("MVA/MW * Unterbrechungsdauer [VAmin/MWmin]")
 plt.plot(ungeplant_ns['Beginn'], ungeplant_ns["ktrafo_produkt"],
   'k.', label=u"Niederspannungsebene")
 plt.plot(ungeplant_ms['Beginn'], ungeplant_ms["ktrafo_produkt"],
