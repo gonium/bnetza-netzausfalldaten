@@ -70,6 +70,15 @@ print "(3) Forcing category datatype for some columns"
 for col in ['Art', 'Anlass', 'Netzebene']:
   alldata[col] = alldata[col].astype('category')
 
+print "(4) Generiere einheitliche Versorger-ID (VID)"
+# Die lft. Nr. wurde in den einzelnen Dateien verschieden geschrieben.
+# Sie repräsentiert je einen Netzbetreiber. Dieser Index kann
+# zusammengefasst werden.
+# See http://stackoverflow.com/a/10972557
+alldata['VID'] = pd.concat([alldata['lft. Nr'].dropna(), 
+  alldata['lft. Nr.'].dropna(), alldata['lft.Nr.'].dropna()]).reindex_like(alldata)
+alldata['VID'] = alldata['VID'].astype(np.int64)
+
 
 print alldata.head()
 print alldata.dtypes
