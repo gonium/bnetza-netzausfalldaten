@@ -32,7 +32,8 @@ for i in vids:
   current['cumsum'] = np.cumsum(current['Dauer'])
   plt.plot(current['Beginn'], current['cumsum'],
     'k-', label=u"%d"%i)
-plt.xlabel("Zeit [MESZ]")
+plt.xlabel("Zeit")
 plt.ylabel("Ungeplante Unterbrechungsdauer [Minuten]")
+plt.yscale('log')
 plt.tight_layout()
 plt.savefig("images/kummulierte_ausfallzeit.png", bbox_inches='tight')
