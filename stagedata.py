@@ -58,7 +58,7 @@ def label_netzebene(row):
   if row[u'HöS'] == 1:
     return u"HS"
   if row[u'HS'] == 1:
-    return u"MS"
+    return u"HS"
   if row[u'MS'] == 1:
     return u"MS"
   if row[u'NS'] == 1:
