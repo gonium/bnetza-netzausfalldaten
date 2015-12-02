@@ -18,5 +18,11 @@ last_outtake=np.max(alldata['Beginn'])
 print "Erster Ausfall: %s, letzter Ausfall: %s" % (first_outtake,
     last_outtake)
 
+
 print "Insgesamt %d Versorger-IDs (VID) gefunden" % len(np.unique(alldata['VID']))
 
+print "### Art des Ausfalls"
+print alldata['Art'].value_counts()
+
+print "### Ausfallursachen"
+print alldata['Anlass'].value_counts()
