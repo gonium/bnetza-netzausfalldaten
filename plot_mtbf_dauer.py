@@ -9,7 +9,7 @@ cmd_parser = argparse.ArgumentParser()
 cmd_parser.add_argument("data", help="pickle/*.pkl file with processed VID data")
 args = cmd_parser.parse_args()
 
-print "Slurping data from %s, storing into " % (args.data)
+print "Slurping data from %s" % (args.data)
 df = pd.read_pickle(args.data)
 print "Datatypes: \n%s" % df.dtypes
 

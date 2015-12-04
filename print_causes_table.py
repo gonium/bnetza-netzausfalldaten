@@ -1,5 +1,8 @@
 # vim:fileencoding=utf-8
 # -*- coding: utf8 -*-
+from IPython.display import display, HTML
+import matplotlib.pyplot as plt
+#import matplotlib.mlab as mlab
 import numpy as np
 import pandas as pd
 import datetime as dt
@@ -11,21 +14,18 @@ args = cmd_parser.parse_args()
 
 print "Slurping data from %s" % (args.datafile)
 alldata = pd.read_pickle(args.datafile)
-print "Datatypes: \n%s" % alldata.dtypes
-
+print alldata.dtypes
 first_outtake=np.min(alldata['Beginn'])
 last_outtake=np.max(alldata['Beginn'])
+
 print "Erster Ausfall: %s, letzter Ausfall: %s" % (first_outtake,
     last_outtake)
 
-
-print "Insgesamt %d Versorger-IDs (VID) gefunden" % len(np.unique(alldata['VID']))
-
-print "### Art des Ausfalls"
-print alldata['Art'].value_counts()
-
 print "### Ausfallursachen"
-print alldata['Anlass'].value_counts()
+causes = alldata['Anlass'].value_counts()
+labels = causes.keys().categories.values
+fracs = causes.get_values()
 
-print "### Netzebenen"
-print alldata['Netzebene'].value_counts()
+display(causes)
+
+

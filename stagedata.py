@@ -56,7 +56,7 @@ alldata['ktrafo_produkt'] = alldata['ktrafo_produkt'].apply(lambda val: float_or
 print "(2) Clean label for Netzebene"
 def label_netzebene(row):
   if row[u'HöS'] == 1:
-    return u"HS"
+    return u"HoeS"
   if row[u'HS'] == 1:
     return u"HS"
   if row[u'MS'] == 1:
