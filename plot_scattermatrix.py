@@ -22,3 +22,6 @@ print "Erster Ausfall: %s, letzter Ausfall: %s" % (first_outtake,
     last_outtake)
 
 scatter_matrix(alldata, alpha=0.2, figsize=(6,6), diagonal='kde')
+
+plt.tight_layout()
+plt.savefig("images/scattermatrix.png", bbox_inches='tight')
