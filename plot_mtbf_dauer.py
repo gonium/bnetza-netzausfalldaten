@@ -32,9 +32,11 @@ plotxmax = mtbfungeplant_minutes_max
 plotymin = dauergeplant_min
 plotymax = dauerungeplant_max
 
-label_geplant = u"Geplante Ausfälle \nMedian MTBF: %.0f, Dauer: %0.f Min." % (mtbfgeplant_minutes_median, dauergeplant_median)
-label_ungeplant = u"Ungeplante Ausfälle\nMedian MTBF: %.0f, Dauer: %0.f Min." % (mtbfungeplant_minutes_median, dauerungeplant_median)
+label_geplant = u"Geplante Ausfälle - Median MTBF: %.0f, Dauer: %0.f Min." % (mtbfgeplant_minutes_median, dauergeplant_median)
+label_ungeplant = u"Ungeplante Ausfälle - Median MTBF: %.0f, Dauer: %0.f Min." % (mtbfungeplant_minutes_median, dauerungeplant_median)
 
+fig = plt.figure(figsize=(16, 9), dpi=75)
+ax = fig.add_subplot(111)
 plt.plot(df['MTBFGeplant_minutes'], df['MittlereDauerGeplant'],
   'k.', label=label_geplant)
 plt.plot(df['MTBFUngeplant_minutes'], df['MittlereDauerUngeplant'],
@@ -55,6 +57,7 @@ plt.ylim((plotymin, plotymax))
 plt.legend(loc="best", prop={"size": 12})
 plt.xlabel(u"Mittlere Zeit zwischen zwei Ausfällen (MTBF) [Minuten]")
 plt.ylabel(u"Mittlere Ausfalldauer [Minuten]")
+plt.tight_layout()
 plt.savefig('images/mtbf_dauer.png', format='png')
 
 
