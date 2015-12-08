@@ -13,15 +13,17 @@ cmd_parser.add_argument("datafile", help="pickle/*.pkl file with staged data")
 args = cmd_parser.parse_args()
 
 print "Slurping data from %s" % (args.datafile)
-alldata = pd.read_pickle(args.datafile)
-print alldata.dtypes
-first_outtake=np.min(alldata['Beginn'])
-last_outtake=np.max(alldata['Beginn'])
+df = pd.read_pickle(args.datafile)
+print df.dtypes
+print "I counted %d samples." % df.shape[0]
 
-print "Erster Ausfall: %s, letzter Ausfall: %s" % (first_outtake,
-    last_outtake)
+samplesize=np.min((df.shape[0], 1000))
+print "Sampling %d elements" % samplesize
+df = df.loc[np.random.choice(df.index, samplesize, replace=False)]
 
-scatter_matrix(alldata, alpha=0.2, figsize=(6,6), diagonal='kde')
-
-plt.tight_layout()
+scatter_matrix(df, alpha=0.2, figsize=(25,25))#, diagonal='kde')
+locs, labels = plt.yticks()
+plt.setp(labels, rotation=30)
+locs, labels = plt.xticks()
+plt.setp(labels, rotation=30)
 plt.savefig("images/scattermatrix.png", bbox_inches='tight')
