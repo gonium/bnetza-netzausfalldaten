@@ -1,6 +1,7 @@
 # vim:fileencoding=utf-8
 # -*- coding: utf8 -*-
 import matplotlib.pyplot as plt
+plt.style.use('ggplot')
 #import matplotlib.mlab as mlab
 import numpy as np
 import pandas as pd
@@ -69,7 +70,7 @@ plt.title(u"Monatssummen der geplanten Ausfälle")
 plt.xlabel("Monat")
 plt.ylabel("Ausgefallene Leistung * Unterbrechungsdauer [GVAmin/GWmin]")
 plt.bar(geplant_monat.index, geplant_monat["ktrafo_produkt"].values/1000,
-    width, color='g')
+    width, color='k')
 ax.yaxis.set_major_formatter(mtick.FormatStrFormatter("%d"))
 locs, labels = plt.yticks()
 plt.setp(labels, rotation=30)
@@ -88,7 +89,7 @@ plt.ylabel("Ausgefallene Leistung * Unterbrechungsdauer [GVAmin/GWmin]")
 plt.bar(ungeplant_monat.index, ungeplant_monat["ktrafo_produkt"].values/1000,
     width, color='r', label=u"ungeplante Ausfälle")
 plt.bar(geplant_monat.index + pd.DateOffset(days=15), geplant_monat["ktrafo_produkt"].values/1000,
-    width, color='g', label=u"geplante Ausfälle")
+    width, color='k', label=u"geplante Ausfälle")
 ax.yaxis.set_major_formatter(mtick.FormatStrFormatter("%d"))
 locs, labels = plt.yticks()
 plt.setp(labels, rotation=30)

@@ -1,6 +1,7 @@
 # vim:fileencoding=utf-8
 # -*- coding: utf8 -*-
 import matplotlib.pyplot as plt
+plt.style.use('ggplot')
 #import matplotlib.mlab as mlab
 import numpy as np
 import pandas as pd

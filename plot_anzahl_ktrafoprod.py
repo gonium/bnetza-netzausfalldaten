@@ -1,6 +1,7 @@
 # vim:fileencoding=utf-8
 # -*- coding: utf8 -*-
 import matplotlib.pyplot as plt
+plt.style.use('ggplot')
 import matplotlib.cm as cm
 import seaborn as sns
 import pandas as pd
@@ -15,29 +16,19 @@ print "Slurping data from %s, storing into " % (args.data)
 df = pd.read_pickle(args.data)
 print "Datatypes: \n%s" % df.dtypes
 
-#plt.style.use('ggplot')
-plt.plot(df['AnzahlAusfaelle'], df['MittleresKtrafoProdukt'], 'k.')
+fig = plt.figure(figsize=(16, 9), dpi=75)
+ax = fig.add_subplot(111)
+plt.plot(df['AnzahlAusfaelleGeplant'],
+    df['MittleresKtrafoProduktGeplant'], 'k.',
+    label=u"Geplante Ausfälle")
+plt.plot(df['AnzahlAusfaelleUngeplant'],
+    df['MittleresKtrafoProduktUngeplant'], 'r.',
+    label=u"Ungeplante Ausfälle")
 plt.xscale('log')
 plt.yscale('log')
 plt.xlabel(u"Anzahl der gemeldeten Ausfälle")
 plt.ylabel(u"Ausfallgröße [MW-Minuten bzw. MVA-Minuten]")
+plt.legend(loc="best")
+plt.tight_layout()
 plt.savefig('images/anzahl_ktrafoprodukt-scatter.png', format='png')
 
-plt.clf()
-plt.hist2d(np.log(df['AnzahlAusfaelle']),
-    np.log(df['MittleresKtrafoProdukt']),
-    (20,20))
-plt.colorbar()
-plt.xlabel(u"Anzahl der gemeldeten Ausfälle")
-plt.ylabel(u"Ausfallgröße [MW-Minuten bzw. MVA-Minuten]")
-plt.savefig('images/anzahl_ktrafoprodukt-heatmap.png', format='png')
-
-
-plt.clf()
-sns.jointplot(x="AnzahlAusfaelle", y="MittleresKtrafoProdukt", 
-    data=df,
-    kind="kde",
-    joint_kws={'xscale':'log', 'yscale':'log'});
-plt.xscale('log')
-plt.yscale('log')
-plt.savefig('images/anzahl_ktrafoprodukt-jointplot.png', format='png')
