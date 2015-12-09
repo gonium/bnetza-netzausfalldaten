@@ -34,11 +34,7 @@ ungeplant.sort_index(inplace=True)
 # calculate overall cummulative sum for ausfallid and duration
 # todo: stacking is broken.
 ungeplant['ausfallnr'] = np.arange(0, len(ungeplant.index), 1)
-ungeplant['cumausfallnr'] = np.cumsum(ungeplant['ausfallnr'].astype(np.float64))
 ungeplant['cumDauer'] = np.cumsum(ungeplant['Dauer'].astype(np.float64))
-ungeplant['avgcumausfallid'] = (ungeplant['cumausfallnr']/ anz_gemeldete_vids)
-ungeplant['avgcumDauer'] = (ungeplant['cumDauer']/ anz_gemeldete_vids)
-
 print ungeplant.dtypes
 
 # Sample ten VIDs for plotting
@@ -50,31 +46,49 @@ for i in vids:
   current = ungeplant[ungeplant['VID'] == i]
   current['cumsum'] = np.cumsum(current['Dauer'])
   plt.plot(current['Beginn'].values, current['cumsum'].values,
-    'k*')
-plt.plot(ungeplant['Beginn'].values, ungeplant['avgcumausfallid'].values,
-    'r-')
-plt.title("Kummulierte Unterbrechungsdauer, VIDs=[%s]" % ', '.join([str(v)
+    'k.')
+  plt.plot(current['Beginn'].values, current['cumsum'].values,
+    'k-')
+  plt.text(np.max(current['Beginn'].values),
+    np.max(current['cumsum'].values),
+    "%d" % i, horizontalalignment="left", 
+    verticalalignment="bottom",
+    weight="bold", color="blue"
+    )
+plt.plot(ungeplant['Beginn'].values, 
+    (ungeplant['cumDauer'].values/anz_gemeldete_vids),
+    'r-', linewidth=2, label=u"Durchschnitt aller Versorger")
+plt.title("Kummulierte ungeplante Unterbrechungsdauer, Versorger-ID=[%s]" % ', '.join([str(v)
   for v in vids]))
 plt.xlabel("Zeit")
 plt.ylabel("Ungeplante Unterbrechungsdauer [Minuten]")
 #plt.yscale('log')
+plt.legend(loc="best")
 plt.tight_layout()
 plt.savefig("images/kummulierte_ausfallzeit.png", bbox_inches='tight')
 
 plt.clf()
 fig = plt.figure(figsize=(16, 9), dpi=75)
 for i in vids:
+  # calculate stats for the current vid
   current = ungeplant[ungeplant['VID'] == i]
   current['sequenznummer'] = np.arange(0, len(current.index), 1)
-  current['cumseqnr'] = np.cumsum(current['sequenznummer'])
-  plt.plot(current['Beginn'].values, current['cumseqnr'].values,
+  plt.plot(current['Beginn'].values, current['sequenznummer'].values,
     'k-')
-  plt.plot(current['Beginn'].values, current['cumseqnr'].values,
+  plt.plot(current['Beginn'].values, current['sequenznummer'].values,
     'k.')
-plt.title("Kummulierte Anzahl der Unterbrechungen, VIDs=[%s]" % ', '.join([str(v)
-  for v in vids]))
+  plt.text(np.max(current['Beginn'].values),
+    np.max(current['sequenznummer'].values),
+    "%d" % i, horizontalalignment="left", 
+    verticalalignment="bottom",
+    weight="bold", color="blue"
+    )
+plt.plot(ungeplant['Beginn'].values, (ungeplant['ausfallnr'].values /
+  anz_gemeldete_vids), 'r-', linewidth=2, label=u"Durchschnitt aller Versorger")
+plt.title("Kummulierte Anzahl der ungeplanten Unterbrechungen, Versorger-ID=[%s]" % ', '.join([str(v) for v in vids]))
 plt.xlabel("Zeit")
-plt.ylabel("Anzahl der Unterbrechungen")
+plt.ylabel("Anzahl der ungeplanten Unterbrechungen")
 #plt.yscale('log')
 plt.tight_layout()
+plt.legend(loc="best")
 plt.savefig("images/kummulierte_unterbrechungsanzahl.png", bbox_inches='tight')
