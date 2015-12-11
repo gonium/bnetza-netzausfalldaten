@@ -38,8 +38,11 @@ ungeplant['cumDauer'] = np.cumsum(ungeplant['Dauer'].astype(np.float64))
 print ungeplant.dtypes
 
 # Sample ten VIDs for plotting
-vids = np.random.choice(vids, 10, replace=False)
-print "Will plot VIDs ", vids
+#vids = np.random.choice(vids, 10, replace=False)
+#print "Will plot VIDs [%s]" % ','.join([x.astype('str') for x in vids])
+#or: use static list
+vids = [233,810,12,641,587,711,263,2,461,112]
+print "Using builtin VID list"
 
 fig = plt.figure(figsize=(16, 9), dpi=75)
 for i in vids:
@@ -92,3 +95,33 @@ plt.ylabel("Anzahl der ungeplanten Unterbrechungen")
 plt.tight_layout()
 plt.legend(loc="best")
 plt.savefig("images/kummulierte_unterbrechungsanzahl.png", bbox_inches='tight')
+
+# TODO: Fix it!
+# Ableitung der Steigung zwischen zwei Punkten über das
+# Steigungsdreieck. Dann Plot der Steigung. 
+
+plt.clf()
+fig = plt.figure(figsize=(16, 9), dpi=75)
+i = 641
+# calculate stats for the current vid
+current = ungeplant[ungeplant['VID'] == i]
+current['cumsum'] = np.cumsum(current['Dauer'])
+current['cumsum_ableitung'] = np.ediff1d(current['cumsum'], to_begin=[0])
+current['cumsum_2ableitung'] = np.ediff1d(current['cumsum_ableitung'], to_begin=[0])
+plt.plot(current['Beginn'].values, current['cumsum_ableitung'].values,
+  'k-')
+plt.plot(current['Beginn'].values, current['cumsum_ableitung'].values,
+  'k.')
+plt.text(np.max(current['Beginn'].values),
+  np.max(current['cumsum_ableitung'].values),
+  "%d" % i, horizontalalignment="left", 
+  verticalalignment="bottom",
+  weight="bold", color="blue"
+  )
+plt.title("Ableitung: Kummulierte Anzahl der ungeplanten Unterbrechungen, Versorger-ID=%d" % i)
+plt.xlabel("Zeit")
+plt.ylabel("1. Ableitung")
+#plt.yscale('log')
+plt.tight_layout()
+plt.legend(loc="best")
+plt.savefig("images/kummulierte_unterbrechungsanzahl_ableitung.png", bbox_inches='tight')
