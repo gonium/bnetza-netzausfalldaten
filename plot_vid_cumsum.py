@@ -105,23 +105,25 @@ fig = plt.figure(figsize=(16, 9), dpi=75)
 i = 641
 # calculate stats for the current vid
 current = ungeplant[ungeplant['VID'] == i]
-current['cumsum'] = np.cumsum(current['Dauer'])
-current['cumsum_ableitung'] = np.ediff1d(current['cumsum'], to_begin=[0])
-current['cumsum_2ableitung'] = np.ediff1d(current['cumsum_ableitung'], to_begin=[0])
-plt.plot(current['Beginn'].values, current['cumsum_ableitung'].values,
-  'k-')
-plt.plot(current['Beginn'].values, current['cumsum_ableitung'].values,
-  'k.')
+current['sequenznummer'] = np.arange(0, len(current.index), 1)
+current['delta_sequenznummer'] = np.ediff1d(current['sequenznummer'], to_begin=[0])
+current['delta_Beginn'] = np.nan_to_num((current['Beginn'] -
+    current['Beginn'].shift()).astype('timedelta64[m]'))
+current['steigung'] = current['delta_sequenznummer'] / current['delta_Beginn']
+# The 'steigung' might contain Inf values, which cannot be plotted.
+# Replace with NaN and drop all NaN values gets rid of them.
+current = current.replace([np.inf, -np.inf], np.nan).dropna(subset=['steigung'],
+    how="all")
+plt.plot(current['Beginn'].values, current['steigung'].values, 'k-')
 plt.text(np.max(current['Beginn'].values),
-  np.max(current['cumsum_ableitung'].values),
+  np.max(current['steigung'].values),
   "%d" % i, horizontalalignment="left", 
   verticalalignment="bottom",
   weight="bold", color="blue"
   )
-plt.title("Ableitung: Kummulierte Anzahl der ungeplanten Unterbrechungen, Versorger-ID=%d" % i)
+plt.title("Steigung der kumm. Anzahl der ungeplanten Unterbrechungen, Versorger-ID=%d" % i)
 plt.xlabel("Zeit")
-plt.ylabel("1. Ableitung")
+plt.ylabel("Steigung")
 #plt.yscale('log')
 plt.tight_layout()
-plt.legend(loc="best")
-plt.savefig("images/kummulierte_unterbrechungsanzahl_ableitung.png", bbox_inches='tight')
+plt.savefig("images/kummulierte_unterbrechungsanzahl_steigung.png", bbox_inches='tight')
