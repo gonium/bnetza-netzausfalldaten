@@ -1,5 +1,6 @@
 images/*
 datasets/*.txt
+datasets/*.csv
 testdata
 *.pyc
 *.pkl

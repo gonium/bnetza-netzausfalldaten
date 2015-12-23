@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env ipython
 # -*- coding: utf8 -*-
 import pandas as pd
 import numpy as np
