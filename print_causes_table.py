@@ -14,7 +14,6 @@ args = cmd_parser.parse_args()
 
 print "Slurping data from %s" % (args.datafile)
 alldata = pd.read_pickle(args.datafile)
-print alldata.dtypes
 first_outtake=np.min(alldata['Beginn'])
 last_outtake=np.max(alldata['Beginn'])
 

@@ -3,7 +3,6 @@
 import matplotlib.pyplot as plt
 plt.style.use('ggplot')
 import matplotlib.cm as cm
-import seaborn as sns
 import pandas as pd
 import numpy as np
 import argparse
